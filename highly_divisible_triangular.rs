@@ -1,12 +1,6 @@
 use std::thread;
 
 fn main() {
-    let solution = 62445894;
-    println!(
-        "{} is triangular number, {}, ",
-        solution,
-        is_triangular(solution)
-    );
     let result = find_first_triangular_number_with_over_n_divisors(500);
     println!("the solution is {}", result.unwrap())
 }
