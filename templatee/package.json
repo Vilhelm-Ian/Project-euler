@@ -1,0 +1,20 @@
+{
+  "name": "greatest_prime",
+  "version": "1.0.0",
+  "description": "",
+  "main": "largest_prime.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "watch": "jest --watch *.js"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "jest": {
+  "testEnvironment": "jest-environment-node",
+  "transform": {}
+  },
+  "dependencies": {
+    "jest": "^28.1.0"
+  }
+}
