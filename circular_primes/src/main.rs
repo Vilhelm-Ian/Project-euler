@@ -1,14 +1,13 @@
+use rayon::prelude::*;
 use std::collections::HashSet;
 
 fn main() {
-    let mut result = vec![2];
-    let mut i = 3;
-    while i < 1_000_000 {
-        if is_circular_prime(i) {
-            result.push(i);
-        }
-        i += 2;
-    }
+    let mut result: Vec<i32> = (3..1_000_000)
+        .into_par_iter()
+        .filter(|i| i % 2 != 0)
+        .filter(|i| is_circular_prime(*i))
+        .collect();
+    result.push(2);
     println!("Hello, world! {:?}", result.len());
     println!("Hello, world! {:?}", result);
 }
