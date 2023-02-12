@@ -12,8 +12,8 @@ fn main() {
 }
 
 fn is_truncable_prime(number: &u32) -> bool {
-    let mut right = trunc_right(&number);
-    let left = trunc_left(&number);
+    let mut right = trunc_right(number);
+    let left = trunc_left(number);
     right.extend(left);
     for number in right {
         if !is_prime(number) {
@@ -37,7 +37,7 @@ fn trunc_left(number: &u32) -> Vec<u32> {
     let mut result = vec![];
     for (index, letter) in str.chars().rev().enumerate() {
         let mut number = letter.to_digit(10).unwrap();
-        if result.len() != 0 {
+        if !result.is_empty() {
             let length = result.len();
             number = number * 10_u32.pow(index as u32) + result[length - 1];
         }
