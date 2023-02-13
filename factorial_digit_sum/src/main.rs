@@ -24,7 +24,7 @@ fn multiply_vec(digits: &Vec<usize>, multiplyer: usize) -> Vec<usize> {
     add_vectors(&mut vectors)
 }
 
-fn generate_vec_from_number(mut number: usize) -> Vec<usize> {
+fn generate_vec_from_number(number: usize) -> Vec<usize> {
     number
         .to_string()
         .chars()
