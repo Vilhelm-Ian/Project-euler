@@ -8,23 +8,22 @@ fn main() {
     println!("{:?}", result);
 }
 
-fn get_divisors(number: i32) -> Vec<i32> {
-    let mut result = vec![1];
+fn get_sum_of_divisors(number: i32) -> i32 {
+    let mut result = 1;
     for i in 2..(number as f32).sqrt().ceil() as i32 {
         if number % i == 0 {
-            result.push(i);
-            result.push(number / i)
+            result += i + number / i
         }
     }
     result
 }
 
 fn is_amicable(number: i32) -> bool {
-    let second_number: i32 = get_divisors(number).iter().sum();
+    let second_number = get_sum_of_divisors(number);
     if second_number == number {
         return false;
     }
-    get_divisors(second_number).iter().sum::<i32>() == number
+    get_sum_of_divisors(second_number) == number
 }
 
 #[cfg(test)]
@@ -33,9 +32,7 @@ mod tests {
 
     #[test]
     fn divisors() {
-        let result = get_divisors(220);
-        println!("{:?}", result);
-        let result: i32 = result.iter().sum();
+        let result = get_sum_of_divisors(220);
         let expected = 284;
         assert_eq!(result, expected);
     }
