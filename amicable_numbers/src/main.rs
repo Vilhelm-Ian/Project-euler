@@ -20,10 +20,7 @@ fn get_sum_of_divisors(number: i32) -> i32 {
 
 fn is_amicable(number: i32) -> bool {
     let second_number = get_sum_of_divisors(number);
-    if second_number == number {
-        return false;
-    }
-    get_sum_of_divisors(second_number) == number
+    second_number != number && get_sum_of_divisors(second_number) == number
 }
 
 #[cfg(test)]
