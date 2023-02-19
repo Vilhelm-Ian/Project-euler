@@ -1,4 +1,5 @@
 use rayon::prelude::*;
+
 fn main() {
     let numbers: Vec<i32> = (1..1_000_000).collect();
     let primes_map: Vec<i32> = numbers
@@ -31,19 +32,31 @@ fn is_prime(number: &i32) -> bool {
 }
 
 fn find_biggest_series(primes: Vec<i32>, primes_map: Vec<i32>) -> i32 {
-    let mut result = vec![];
-    for i in 0..primes.len() {
-        let mut temp = vec![];
-        for prime in primes.iter().take(primes.iter().len()).skip(i) {
-            temp.push(*prime);
-            let sum: i32 = temp.iter().sum();
-            if sum >= 1_000_000 {
-                break;
+    let result = primes.par_iter().enumerate().fold(
+        || vec![],
+        |mut result, (i, _)| {
+            let mut temp = vec![];
+            for prime in primes.iter().take(primes.iter().len()).skip(i) {
+                temp.push(*prime);
+                let sum: i32 = temp.iter().sum();
+                if sum >= 1_000_000 {
+                    break;
+                }
+                if primes_map[sum as usize - 1] != 0 && temp.len() > result.len() {
+                    result = temp.clone();
+                }
             }
-            if primes_map[sum as usize - 1] != 0 && temp.len() > result.len() {
-                result = temp.clone();
+            result
+        },
+    );
+    let result = result.reduce(
+        || vec![],
+        |result, x| {
+            if x.len() > result.len() {
+                return x;
             }
-        }
-    }
-    result.iter().sum()
+            result
+        },
+    );
+    result.iter().sum::<i32>()
 }
