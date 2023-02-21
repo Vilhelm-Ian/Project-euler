@@ -1,33 +1,20 @@
-use std::collections::HashMap;
-use std::collections::HashSet;
+const LIMIT: i32 = 4;
 
 fn main() {
-    let mut primes: HashSet<i32> = HashSet::new();
-    let mut number_divisors_map: HashMap<i32, Vec<i32>> = HashMap::new();
     let numbers: Vec<i32> = (1..1_000_000).collect();
-    let solution = find_n_distinct_primes(4, numbers, &mut primes, &mut number_divisors_map);
+    let solution = find_n_distinct_primes(LIMIT, numbers);
     println!("{:?}", solution);
 }
 
-fn find_n_distinct_primes(
-    n: i32,
-    numbers: Vec<i32>,
-    primes: &mut HashSet<i32>,
-    map: &mut HashMap<i32, Vec<i32>>,
-) -> Option<i32> {
-    for i in 3..numbers.len() as i32 - n {
+fn find_n_distinct_primes(n: i32, numbers: Vec<i32>) -> Option<i32> {
+    let mut i = 3;
+    while i < numbers.len() as i32 - n {
         let mut factors: Vec<i32> = vec![];
         for z in 0..n {
-            let _factors;
-            let map_get = map.get(&(i + z));
-            if map_get.is_some() {
-                _factors = map_get.unwrap().clone();
-            } else {
-                _factors = get_factors(i + z, primes);
-                map.insert(i + z, _factors.clone());
-            };
-            map.insert(i + z, _factors.clone());
+            let _factors = get_factors(i + z);
+            //println!("{:?} {:?}", _factors, i + z);
             if _factors.len() != n as usize {
+                i += z;
                 break;
             }
             factors.extend(_factors);
@@ -35,46 +22,32 @@ fn find_n_distinct_primes(
         if factors.len() == (n * n) as usize {
             return Some(numbers[i as usize - 1]);
         }
+        i += 1;
     }
     None
 }
 
-fn get_factors(mut number: i32, primes: &mut HashSet<i32>) -> Vec<i32> {
+fn get_factors(mut number: i32) -> Vec<i32> {
+    let number_copy = number;
     let mut solution: Vec<i32> = vec![];
-    for prime in primes.iter() {
-        if *prime > number {
-            break;
-        }
-        if number % prime == 0 {
-            number /= prime;
-            if !solution.contains(prime) {
-                solution.push(*prime)
+    if number % 2 == 0 {
+        solution.push(2);
+        number /= 2;
+    }
+    let mut i = 3;
+    while number != 1 && i < number_copy / 2 {
+        //println!("{:?} {:?} {:?}", number % i, number, i);
+        if number % i == 0 && is_prime(i) {
+            number /= i;
+            if !solution.contains(&i) {
+                solution.push(i)
+            };
+            if solution.len() > LIMIT as usize {
+                break;
             }
         }
-    }
-    if number == 1 {
-        return solution;
-    }
-    let new_primes = get_primes_of_factor(number, primes);
-    for prime in new_primes {
-        primes.insert(prime);
-        if number % prime == 0 {
-            number /= prime;
-            if !solution.contains(&prime) {
-                solution.push(prime)
-            }
-        }
-    }
-    solution
-}
 
-fn get_primes_of_factor(number: i32, primes: &mut HashSet<i32>) -> Vec<i32> {
-    let mut solution = vec![];
-    for i in 2..=number {
-        let get_prime = primes.get(&i);
-        if get_prime.is_some() || is_prime(i) {
-            solution.push(i)
-        }
+        i += 2;
     }
     solution
 }
