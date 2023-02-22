@@ -2,6 +2,9 @@ fn main() {
     let mut biggest = vec![0, 0, 0];
     for a in -999..1000 {
         for b in -1000..=1000 {
+            if !is_prime(&b) {
+                continue;
+            }
             let number_primes = quadratic_formula(a, b);
             if number_primes > biggest[0] {
                 biggest = vec![number_primes, a, b];
@@ -9,26 +12,30 @@ fn main() {
         }
     }
     let product = biggest[1] * biggest[2];
-    println!("{:?}", biggest);
+    println!("{:?}", product);
 }
 
 fn quadratic_formula(a: i32, b: i32) -> i32 {
     let mut n = 0;
+    let mut primes = vec![];
     loop {
         let result = (n * n) + (a * n) + b;
         if !is_prime(&result) {
             break;
         }
+        if !primes.contains(&result) {
+            primes.push(result);
+        }
         n += 1;
     }
-    n
+    primes.len() as i32
 }
 
 fn is_prime(number: &i32) -> bool {
     if number == &2 {
         return true;
     }
-    if number == &1 {
+    if number <= &1 {
         return false;
     }
     for i in 2..=(*number as f32).sqrt().ceil() as i32 {
