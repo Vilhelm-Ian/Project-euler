@@ -1,0 +1,41 @@
+fn main() {
+    println!("Hello, world!");
+}
+
+fn heap_algoirthm(k: i32, digits: &mut Vec<i32>, result: &mut Vec<Vec<i32>>) -> () {
+    if k == 1 {
+        return;
+    }
+    heap_algoirthm(k - 1, digits, result);
+    for i in 0..k - 1 {
+        if k % 2 == 0 {
+            let i = i as usize;
+            let k = (k - 1) as usize;
+            (digits[i], digits[k]) = (digits[k], digits[i])
+        } else {
+            let k = (k - 1) as usize;
+            (digits[0], digits[k]) = (digits[k], digits[0])
+        }
+        result.push(digits.clone());
+        heap_algoirthm(k - 1, digits, result)
+    }
+}
+
+fn number_to_vec(number: i32) -> Vec<i32> {
+    number.to_string().chars().map(|x| x as i32 - 48).collect()
+}
+
+fn vec_to_num(vector: Vec<i32>) -> i32 {
+    let temp: i32 = vector.iter().enumerate().fold(0, |index,(acc,ele)| {
+       let result = ele * 10_i32.pow(index - 1);
+       acc
+
+    });
+    temp
+}
+
+fn solution(number: i32) -> bool {
+    f64::powf(permutation, 1.0 / 3.0)
+    true
+}
+

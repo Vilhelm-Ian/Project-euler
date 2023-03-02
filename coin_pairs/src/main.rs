@@ -28,7 +28,20 @@ fn main() {
                                 if a + b * 2 + c * 5 + d * 10 + e * 20 + f * 50 + g * 100 > 200 {
                                     break;
                                 }
-                                permutations.push([a, b, c, d, e, f, g])
+                                for j in (0..=1) {
+                                    if a + b * 2
+                                        + c * 5
+                                        + d * 10
+                                        + e * 20
+                                        + f * 50
+                                        + g * 100
+                                        + j * 200
+                                        > 200
+                                    {
+                                        break;
+                                    }
+                                    permutations.push([a, b, c, d, e, f, g, j])
+                                }
                             }
                         }
                     }
@@ -36,15 +49,23 @@ fn main() {
             }
         }
     }
-    let solution: Vec<[i32; 7]> = permutations
+    let solution: Vec<[i32; 8]> = permutations
         .iter()
         .filter(|x| {
-            x[0] * 1 + x[1] * 2 + x[2] * 5 + x[3] * 10 + x[4] * 20 + x[5] * 50 + x[6] * 100 == 200
+            x[0] * 1
+                + x[1] * 2
+                + x[2] * 5
+                + x[3] * 10
+                + x[4] * 20
+                + x[5] * 50
+                + x[6] * 100
+                + x[7] * 200
+                == 200
         })
         .cloned()
         .collect();
-    println!("{:?}", solution.len());
-    for sl in solution {
+    for sl in solution.iter() {
         println!("{:?}", sl);
     }
+    println!("{:?}", solution.len());
 }
